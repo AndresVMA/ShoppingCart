@@ -1,7 +1,7 @@
 ﻿using SC.DataProvider;
 using System.Linq;
 using System.Web.Http;
-
+using System.Data.Entity;
 namespace SC.Api.Controllers
 {
     public class ProductsController : ApiController
@@ -11,7 +11,7 @@ namespace SC.Api.Controllers
         {
             using (var client = new ECommerceDbContext())
             {
-                var products = client.Products.Include("ProductType");
+                var products = client.Products.Include(p => p.ProductType);
                 if (products.Any())
                 {
                     return Ok(products.ToList());
@@ -23,7 +23,7 @@ namespace SC.Api.Controllers
         {
             using (var client = new ECommerceDbContext())
             {
-                var product = client.Products.Include("ProductType").SingleOrDefault(p => p.Id == id);
+                var product = client.Products.Include(p => p.ProductType).SingleOrDefault(p => p.Id == id);
                 if (product != null)
                 {
                     return Ok(product);
